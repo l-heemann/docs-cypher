@@ -31,6 +31,81 @@ label:functionality[]
 label:deprecated[]
 [source, cypher, role="noheader"]
 ----
+MATCH (where {...})
+----
+----
+MATCH (...)-[where {...}]->()
+----
+a| The unescaped variable named `where` (or any casing variant, like `WHERE`) used in a node or relationship pattern followed directly by a property key-value expression is deprecated.
+To continue using variables with this name, use backticks to escape the variable name:
+
+* Node patterns: `MATCH (++`where`++ { ... })`
+* Relationship patterns: `MATCH (...)-[++`where`++ { ... }]->()`
+
+a|
+label:functionality[]
+label:deprecated[]
+[source, cypher, role="noheader"]
+----
+... + n:A
+----
+----
+... + n:A&B
+----
+----
+... + n:A&B\|C
+----
+a| Using an unparenthesized label expression predicate as the right-hand side operand of `+` is deprecated.
+Parenthesize the label expression predicate on the right-hand side of `+`: `... + (n:A)`.
+
+a|
+label:functionality[]
+label:deprecated[]
+[source, cypher, role="noheader"]
+----
+CASE x ... WHEN is :: STRING THEN ... END
+----
+a| Using an unescaped variable named `is` (or any casing variant, like `IS`) as a `WHEN` operand in a xref:queries/case.adoc#case-simple[simple `CASE`] expression is deprecated.
+To continue using variables with this name in simple `CASE` expressions, use backticks to escape the variable name: `CASE x ... WHEN ++`is`++ :: STRING THEN ... END`
+
+a|
+label:functionality[]
+label:deprecated[]
+[source, cypher, role="noheader"]
+----
+CASE x ... WHEN contains + 1 THEN ... END
+----
+----
+CASE x ... WHEN contains - 1 THEN ... END
+----
+a| Using an unescaped variable named `contains` (or any casing variant, like `CONTAINS`) in addition or subtraction operations within a `WHEN` operand of a xref:queries/case.adoc#case-simple[simple `CASE`] expression is deprecated.
+To continue using variables with this name, use backticks to escape the variable name:
+
+* Additions: `CASE x ... WHEN ++`contains`++ + 1 THEN ... END` 
+* Subtractions: `CASE x ... WHEN ++`contains`++ - 1 THEN ... END`
+
+a|
+label:functionality[]
+label:deprecated[]
+[source, cypher, role="noheader"]
+----
+CASE x ... WHEN in[1] THEN ... END
+----
+----
+CASE x ... WHEN in["abc"] THEN ... END
+----
+a| Using the `[]` operator on an unescaped variable named `in` (or any casing variant, like `IN`) within a `WHEN` operand of a xref:queries/case.adoc#case-simple[simple `CASE`] expression is deprecated.
+To continue using variables with this name, use backticks to escape the variable name:
+	
+* `CASE x ... WHEN ++`in`++[1] THEN ... END` 
+* `CASE x ... WHEN ++`in`++["abc"] THEN ... END`
+
+
+a|
+label:functionality[]
+label:deprecated[]
+[source, cypher, role="noheader"]
+----
 CALL db.schema.nodeTypeProperties() YIELD propertyTypes RETURN propertyTypes;
 CALL db.schema.relTypeProperties() YIELD propertyTypes RETURN propertyTypes;
 ----
@@ -69,7 +144,6 @@ label:updated[]
 GRANT READ {*} ON GRAPH * FOR (n) WHERE n.createdAt > date('2024-10-25') TO regularUsers
 ----
 | link:{neo4j-docs-base-uri}/operations-manual/{page-version}/authentication-authorization/property-based-access-control/[Property-based access control] now supports xref:values-and-types/spatial.adoc[spatial] and xref:values-and-types/temporal.adoc[temporal] values.
-
 |===
 
 
